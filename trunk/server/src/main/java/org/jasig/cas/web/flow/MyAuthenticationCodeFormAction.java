@@ -30,8 +30,13 @@ public class MyAuthenticationCodeFormAction extends AuthenticationViaFormAction 
 		
 		MyUsernamePasswordCredentials mupc = (MyUsernamePasswordCredentials) credentials;
 		if (StringUtils.isBlank(mupc.getAuthcode())
-				|| StringUtils.isBlank(authcode))
+				|| StringUtils.isBlank(authcode)){
+			MessageBuilder msgBuilder = new MessageBuilder();
+			msgBuilder.defaultText("验证码错误");
+			messageContext.addMessage(msgBuilder.error().build());
 			return ERROR;
+		}
+			
 		if (mupc.getAuthcode().equals(authcode)) {
 			return SUCCESS;
 		}
