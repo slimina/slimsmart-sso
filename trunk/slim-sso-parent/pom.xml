@@ -5,9 +5,9 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>slim-sso-client</module>
-		<module>slim-sso-client-demo</module>
-		<module>slim-sso-server</module>
-		<module>slim-sso-webapp</module>
+		<module>slim-client-core</module>
+		<module>slim-client-demo</module>
+		<module>slim-server-core</module>
+		<module>slim-webapp</module>
 	</modules>
 </project>
