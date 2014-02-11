@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+              http://www.springframework.org/schema/webflow
+              http://www.springframework.org/schema/webflow/spring-webflow-1.0.xsd">
+	<start-state idref="remoteLogin" />
+	<!-- 远程登陆主要Action -->
+	<action-state id="remoteLogin">
+		<action bean="remoteLoginAction" />
+		<transition on="error" to="remoteCallbackView" />
+		<transition on="submit" to="authcodeValidate" />
+		<transition on="checkTicketGrantingTicket" to="ticketGrantingTicketExistsCheck" />
+	</action-state>
+	<!-- 远程回调页面，主要以JavaScript的方式回传一些参数用 -->
+	<end-state id="remoteCallbackView" view="remoteCallbackView" />
+
+	<decision-state id="ticketGrantingTicketExistsCheck">
+		<if test="${flowScope.ticketGrantingTicketId != null}" then="hasServiceCheck"
+			else="gatewayRequestCheck" />
+	</decision-state>
+	<decision-state id="gatewayRequestCheck">
+		<if
+			test="${externalContext.requestParameterMap['gateway'] != '' &amp;&amp; externalContext.requestParameterMap['gateway'] != null &amp;&amp; flowScope.service != null}"
+			then="redirect" else="remoteCallbackView" />
+	</decision-state>
+
+	<decision-state id="hasServiceCheck">
+		<if test="${flowScope.service != null}" then="generateServiceTicket"
+			else="remoteCallbackView" />
+	</decision-state>
+
+	<!-- The "warn" action makes the determination of whether to redirect directly 
+		to the requested service or display the "confirmation" page to go back to 
+		the server. -->
+	<decision-state id="warn">
+		<if test="${flowScope.warnCookieValue}" then="showWarningView"
+			else="redirect" />
+	</decision-state>
+	
+	<action-state id="authcodeValidate">
+		<action bean="authenticationViaFormAction"  method="validatorCode"/>
+		<transition on="success" to="bindAndValidate" />
+		<transition on="error" to="remoteCallbackView" />
+	</action-state>
+	
+	<action-state id="bindAndValidate">
+		<action bean="authenticationViaFormAction" />
+		<transition on="success" to="submit" />
+		<transition on="error" to="remoteCallbackView" />
+	</action-state>
+
+	<action-state id="submit">
+		<action bean="authenticationViaFormAction" method="submit" />
+		<transition on="warn" to="warn" />
+		<transition on="success" to="sendTicketGrantingTicket" />
+		<transition on="error" to="remoteCallbackView" />
+	</action-state>
+
+	<action-state id="sendTicketGrantingTicket">
+		<action bean="sendTicketGrantingTicketAction" />
+		<transition on="success" to="serviceCheck" />
+	</action-state>
+	<decision-state id="serviceCheck">
+		<if test="${flowScope.service != null}" then="generateServiceTicket"
+			else="remoteCallbackView" />
+	</decision-state>
+
+	<action-state id="generateServiceTicket">
+		<action bean="generateServiceTicketAction" />
+		<transition on="success" to="warn" />
+		<transition on="error" to="remoteCallbackView" />
+		<transition on="gateway" to="redirect" />
+	</action-state>
+	<!-- The "showWarningView" end state is the end state for when the user 
+		has requested privacy settings (to be "warned") to be turned on. It delegates 
+		to a view defines in default_views.properties that display the "Please click 
+		here to go to the service." message. -->
+	<end-state id="showWarningView" view="casLoginConfirmView" />
+	<!-- The "redirect" end state allows CAS to properly end the workflow while 
+		still redirecting the user back to the service required. -->
+	<end-state id="redirect" view="bean:dynamicRedirectViewSelector" />
+
+	<end-state id="viewServiceErrorView" view="viewServiceErrorView" />
+
+	<end-state id="viewServiceSsoErrorView" view="viewServiceSsoErrorView" />
+	<global-transitions>
+		<transition to="viewServiceErrorView" on-exception="org.springframework.webflow.execution.repository.NoSuchFlowExecutionException" />
+			<transition to="viewServiceSsoErrorView" on-exception="org.jasig.cas.services.UnauthorizedSsoServiceException" />
+			<transition to="viewServiceErrorView" on-exception="org.jasig.cas.services.UnauthorizedServiceException" />
+	</global-transitions>
+</flow>
