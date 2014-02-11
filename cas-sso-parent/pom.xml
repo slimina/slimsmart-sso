@@ -5,9 +5,9 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>cas-sso-client</module>
-		<module>cas-sso-client-demo</module>
-		<module>cas-sso-server</module>
-		<module>cas-sso-webapp</module>
+		<module>cas-client-core</module>
+		<module>cas-client-demo</module>
+		<module>cas-server-core</module>
+		<module>cas-webapp</module>
 	</modules>
 </project>
