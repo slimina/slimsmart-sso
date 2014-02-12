@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<name>cas-sso-parent</name>
 	<groupId>org.jasig.cas</groupId>
-	<artifactId>cas-client-core</artifactId>
+	<artifactId>cas-sso</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<modules>
