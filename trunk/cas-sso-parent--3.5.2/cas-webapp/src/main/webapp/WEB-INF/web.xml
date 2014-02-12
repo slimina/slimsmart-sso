@@ -118,7 +118,17 @@
     <servlet-name>cas</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
-
+  
+  <servlet-mapping>
+     <servlet-name>cas</servlet-name>
+     <url-pattern>/remoteLogin</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet-mapping>
+     <servlet-name>cas</servlet-name>
+     <url-pattern>/remoteLogout</url-pattern>
+ </servlet-mapping>
+ 
   <servlet-mapping>
     <servlet-name>cas</servlet-name>
     <url-pattern>/validate</url-pattern>
@@ -208,10 +218,32 @@
     <servlet-name>cas</servlet-name>
     <url-pattern>/403.html</url-pattern>
   </servlet-mapping>
-
+  
+  <servlet>
+		<servlet-name>Kaptcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+		<init-param>
+			<param-name>kaptcha.border</param-name>
+			<param-value>no</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.space</param-name>
+			<param-value>5</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.length</param-name>
+			<param-value>5</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Kaptcha</servlet-name>
+		<url-pattern>/captcha.jpg</url-pattern>
+	</servlet-mapping>
+	
   <session-config>
     <!-- Default to 5 minute session timeouts -->
-    <session-timeout>5</session-timeout>
+    <session-timeout>30</session-timeout>
   </session-config>
 
   <error-page>

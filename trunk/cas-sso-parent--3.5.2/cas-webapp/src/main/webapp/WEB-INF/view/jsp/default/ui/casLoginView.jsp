@@ -55,6 +55,20 @@
 						<spring:message code="screen.welcome.label.password.accesskey" var="passwordAccessKey" />
 						<form:password cssClass="required" cssErrorClass="error" id="password" size="25" tabindex="2" path="password"  accesskey="${passwordAccessKey}" htmlEscape="true" autocomplete="off" />
                     </div>
+                     <div class="row fl-controls-left">
+                      <label for="authcode"><spring:message code="screen.welcome.label.authcode" /></label>
+                      <spring:message code="screen.welcome.label.authcode.accesskey" var="authcodeAccessKey" />
+                    	<table>
+						<tr>
+								<td>
+						<form:input cssClass="required" cssErrorClass="error" id="authcode" size="10" tabindex="2" path="authcode"  accesskey="${authcodeAccessKey}" htmlEscape="true" autocomplete="off" />
+						</td>
+								<td align="left" valign="bottom" style="vertical-align: bottom;">
+						&nbsp; <img alt="<spring:message code="required.authcode" />" onclick="this.src='captcha.jpg?'+Math.random()" width="93" height="30" src="captcha.jpg">
+                    </td>
+						</tr>
+						</table>
+                    </div>
                     <div class="row check">
                         <input id="warn" name="warn" value="true" tabindex="3" accesskey="<spring:message code="screen.welcome.label.warn.accesskey" />" type="checkbox" />
                         <label for="warn"><spring:message code="screen.welcome.label.warn" /></label>
