@@ -46,8 +46,21 @@ public class UsernamePasswordCredentials implements Credentials {
     @NotNull
     @Size(min=1, message = "required.password")
     private String password;
+    
+    /** The authcode. */
+    @NotNull
+    @Size(min=1, message = "required.authcode")
+    private String authcode;
+    
+	public String getAuthcode() {
+		return authcode;
+	}
 
-    /**
+	public void setAuthcode(String authcode) {
+		this.authcode = authcode;
+	}
+
+	/**
      * @return Returns the password.
      */
     public final String getPassword() {
@@ -88,7 +101,7 @@ public class UsernamePasswordCredentials implements Credentials {
 
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null) return false;
-
+        if (authcode != null ? !authcode.equals(that.authcode) : that.authcode != null) return false;
         return true;
     }
 
@@ -96,6 +109,7 @@ public class UsernamePasswordCredentials implements Credentials {
     public int hashCode() {
         int result = username != null ? username.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (authcode != null ? authcode.hashCode() : 0);
         return result;
     }
 }
