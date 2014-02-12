@@ -5,35 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>登录</title>
-<!-- <script type="text/javascript" src="jquery-1.8.0.min.js"></script> -->
-<script type="text/javascript">
-/*
-var urlOfGetLt = 'https://sso.slimsmart.cn:8443/cas/login?get-lt=true&n='+new Date().getTime();
-
-function flightHandler(json){
-	if(json){
-		   $("#lt").val(json.lt);
-           $("#execution").val(json.execution);
-	}
-};
-
-$(document).ready(function() {
-	$.ajax({
-	    type: "get",
-	    async: false,
-	    url: urlOfGetLt,
-	    dataType: "jsonp",
-	    jsonp: "callback",
-	    jsonpCallback:"flightHandler",
-	    success: function(json){
-	    	console.log(json);
-	    },
-	    error: function(){
-	        alert("无法获取登录key");
-	    }
-	});
-});*/
-</script>
 </head>
 <body>
 	<form id="myLoginForm" action="https://sso.uaa.cn:8443/cas/remoteLogin" method="POST">
