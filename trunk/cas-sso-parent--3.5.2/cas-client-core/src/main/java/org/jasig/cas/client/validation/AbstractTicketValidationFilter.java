@@ -185,6 +185,12 @@ public abstract class AbstractTicketValidationFilter extends AbstractCasFilter {
                     return;
                 }
             } catch (final TicketValidationException e) {
+            	
+            	if(e.getMessage().equalsIgnoreCase("TicketValidation-CTFO")){
+            		response.sendRedirect(request.getRequestURL().toString());
+            		 return;
+            	}
+            	
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 log.warn(e, e);
 
