@@ -79,11 +79,12 @@ public class Cas20ServiceTicketValidator extends AbstractCasProtocolUrlBasedTick
     }
 
     protected final Assertion parseResponseFromServer(final String response) throws TicketValidationException {
+    	System.out.println("-------------------------");
+    	System.out.println(response);
         final String error = XmlUtils.getTextForElement(response,
                 "authenticationFailure");
-
         if (CommonUtils.isNotBlank(error)) {
-            throw new TicketValidationException(error);
+        	throw new TicketValidationException("TicketValidation-CTFO");
         }
 
         final String principal = XmlUtils.getTextForElement(response, "user");
