@@ -73,7 +73,23 @@
   <bean id="errorHandlerResolver" class="org.jasig.cas.web.FlowExecutionExceptionResolver"/>
 
   <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
-
+  
+  <!-- 增加远程控制者，允许以/remote请求启动remote控制流程 -->
+ 
+ <bean id="handlerMappingB" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+     <property name="mappings">
+         <props>
+             <prop key="/remoteLogin">remoteLoginController</prop>
+             <prop key="/remoteLogout">remoteLogoutController</prop>
+         </props>
+     </property>
+     <property name="interceptors">
+         <list>
+             <ref bean="localeChangeInterceptor" />
+         </list>
+     </property>
+ </bean>
+ 
   <bean
       id="handlerMappingC"
       class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -129,6 +145,7 @@
   </bean>
 
 
+
   <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter"
         p:flowExecutor-ref="flowExecutor"
         p:flowUrlHandler-ref="flowUrlHandler"/>
@@ -147,6 +164,8 @@
 
   <webflow:flow-registry id="flowRegistry" flow-builder-services="builder">
     <webflow:flow-location path="/WEB-INF/login-webflow.xml" id="login"/>
+<!--     <webflow:flow-location path="/WEB-INF/remoteLogin-webflow.xml" id="remoteLogin"/> -->
+<!--     <webflow:flow-location path="/WEB-INF/remoteLogout-webflow.xml" id="remoteLogout"/> -->
   </webflow:flow-registry>
 
   <webflow:flow-builder-services id="builder" view-factory-creator="viewFactoryCreator"
@@ -156,6 +175,52 @@
       p:serviceManagerUrl="${cas.securityContext.serviceProperties.service}" />
 
   <bean id="expressionParser" class="org.springframework.webflow.expression.WebFlowOgnlExpressionParser"/>
+  
+  <!--    远程配置   -->
+  
+  <bean id="remoteLoginController" class="org.springframework.webflow.mvc.servlet.FlowController">
+  <property name="flowExecutor" ref="remoteLoginFlowExecutor" />
+  <property name="flowUrlHandler" ref="flowUrlHandler"/>
+ </bean>
+        
+ <webflow:flow-executor id="remoteLoginFlowExecutor" flow-registry="remoteLoginFlowRegistry">
+     <webflow:flow-execution-attributes>
+         <webflow:always-redirect-on-pause value="false"/>
+     </webflow:flow-execution-attributes>
+ </webflow:flow-executor>
+ 
+ <webflow:flow-registry id="remoteLoginFlowRegistry" flow-builder-services="builder">
+     <webflow:flow-location path="/WEB-INF/remoteLogin-webflow.xml" id="remoteLogin"/>
+ </webflow:flow-registry>
+ 
+ <webflow:flow-builder-services id="flowBuilderServices" view-factory-creator="viewFactoryCreator"/>
+ 
+ <bean id="remoteLoginAction" class="org.jasig.cas.web.flow.RemoteLoginAction"
+     p:argumentExtractors-ref="argumentExtractors"
+  p:warnCookieGenerator-ref="warnCookieGenerator"
+  p:ticketGrantingTicketCookieGenerator-ref="ticketGrantingTicketCookieGenerator" />
+  
+ <bean id="remoteLogoutController" class="org.springframework.webflow.mvc.servlet.FlowController">
+  <property name="flowExecutor" ref="remoteLogoutFlowExecutor" />
+  <property name="flowUrlHandler" ref="flowUrlHandler"/>
+ </bean>
+ 
+ <webflow:flow-executor id="remoteLogoutFlowExecutor" flow-registry="remoteLogoutFlowRegistry">
+     <webflow:flow-execution-attributes>
+         <webflow:always-redirect-on-pause value="false"/>
+     </webflow:flow-execution-attributes>
+ </webflow:flow-executor>
+ <webflow:flow-registry id="remoteLogoutFlowRegistry" flow-builder-services="builder">
+     <webflow:flow-location path="/WEB-INF/remoteLogout-webflow.xml" id="remoteLogout"/>
+ </webflow:flow-registry>
+ 
+ <bean id="remoteLogoutAction" class="org.jasig.cas.web.flow.RemoteLogoutAction"
+  p:argumentExtractors-ref="argumentExtractors"
+  p:warnCookieGenerator-ref="warnCookieGenerator"
+  p:ticketGrantingTicketCookieGenerator-ref="ticketGrantingTicketCookieGenerator"
+     p:centralAuthenticationService-ref="centralAuthenticationService" />
+  
+ <!--    远程配置   -->
 
   <bean id="viewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
     <property name="viewResolvers">

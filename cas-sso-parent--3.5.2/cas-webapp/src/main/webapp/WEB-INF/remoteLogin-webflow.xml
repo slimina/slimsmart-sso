@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      start-state="remoteLogin">
+ <!-- 远程登陆主要Action -->
+    <action-state id="remoteLogin">
+        <evaluate expression="remoteLoginAction" />
+        <transition on="error" to="remoteCallbackView" />
+        <transition on="submit" to="authcodeValidate" />
+        <transition on="checkTicketGrantingTicket" to="ticketGrantingTicketExistsCheck" />
+    </action-state>
+    
+    <!-- 远程回调页面，主要以JavaScript的方式回传一些参数用 -->
+    <end-state id="remoteCallbackView" view="remoteCallbackView" />
+    
+	<action-state id="authcodeValidate">  
+        <evaluate expression="authenticationViaFormAction.validatorCode(flowRequestContext, messageContext)" />  
+        <transition on="error" to="remoteCallbackView" />  
+        <transition on="success" to="bindAndValidate" />  
+    </action-state>  
+	
+    <action-state id="bindAndValidate">
+        <evaluate expression="authenticationViaFormAction.doBind(flowRequestContext, flowScope.credentials)" />
+        <transition on="success" to="submit" />
+        <transition on="error" to="remoteCallbackView" />
+    </action-state>
+    
+    <decision-state id="ticketGrantingTicketExistsCheck">
+  <if test="flowScope.ticketGrantingTicketId != null" then="hasServiceCheck" else="gatewayRequestCheck" />
+ </decision-state>
+ 
+ <decision-state id="hasServiceCheck">
+        <if test="flowScope.service != null" then="generateServiceTicket" else="remoteCallbackView" />
+    </decision-state>
+ <decision-state id="gatewayRequestCheck">
+  <if test="externalContext.requestParameterMap['gateway'] neq '' &amp;&amp; externalContext.requestParameterMap['gateway'] neq null &amp;&amp; flowScope.service neq null" then="redirect" else="remoteCallbackView" />
+ </decision-state>
+ 
+ <action-state id="generateServiceTicket">
+        <evaluate expression="generateServiceTicketAction" />
+        <transition on="success" to ="warn" />
+        <transition on="error" to="remoteCallbackView" />
+        <transition on="gateway" to="redirect" />
+    </action-state>
+ 
+ <decision-state id="warn">
+  <if test="flowScope.warnCookieValue" then="showWarningView" else="redirect" />
+ </decision-state>
+ 
+ <action-state id="submit">
+        <evaluate expression="authenticationViaFormAction.submit(flowRequestContext,messageContext)" />
+  <transition on="warn" to="warn" />
+  <transition on="success" to="sendTicketGrantingTicket" />
+  <transition on="error" to="remoteCallbackView" />
+ </action-state> 
+ 
+ <action-state id="sendTicketGrantingTicket">
+        <evaluate expression="sendTicketGrantingTicketAction" />
+  <transition to="serviceCheck" />
+ </action-state>
+ 
+ <decision-state id="serviceCheck">
+  <if test="flowScope.service neq null" then="generateServiceTicket" else="remoteCallbackView" />
+ </decision-state>
+    
+ <end-state id="showWarningView" view="casLoginConfirmView" />
+ 
+ <action-state id="redirect">
+        <evaluate expression="flowScope.service.getResponse(requestScope.serviceTicketId)" result-type="org.jasig.cas.authentication.principal.Response" result="requestScope.response" />
+        <transition to="postRedirectDecision" />
+    </action-state>
+ 
+    <decision-state id="postRedirectDecision">
+        <if test="requestScope.response.responseType.name() eq 'POST'" then="postView" else="redirectView" />
+    </decision-state>
+    <end-state id="postView" view="postResponseView">
+        <on-entry>
+            <set name="requestScope.parameters" value="requestScope.response.attributes" />
+            <set name="requestScope.originalUrl" value="flowScope.service.id" />
+        </on-entry>
+    </end-state>
+    <end-state id="redirectView" view="externalRedirect:${requestScope.response.url}" />
+    
+ <end-state id="viewServiceErrorView" view="viewServiceErrorView" />
+ <end-state id="viewServiceSsoErrorView" view="viewServiceSsoErrorView" />
+    
+ <global-transitions>
+        <transition to="viewServiceErrorView" on-exception="org.springframework.webflow.execution.repository.NoSuchFlowExecutionException" />
+        <transition to="viewServiceSsoErrorView" on-exception="org.jasig.cas.services.UnauthorizedSsoServiceException" />
+        <transition to="viewServiceErrorView" on-exception="org.jasig.cas.services.UnauthorizedServiceException" />
+    </global-transitions>
+</flow>
