@@ -27,16 +27,16 @@
 		<filter-class>org.jasig.cas.client.authentication.RemoteAuthenticationFilter</filter-class>
 		 <init-param>
         <param-name>localLoginUrl</param-name>
-        <param-value>http://www.uaa.cn:8888/sso-demo/login.jsp</param-value>
+        <param-value>http://www.slimsmart.cn:8888/demo/login.jsp</param-value>
     	</init-param>
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
-			<param-value>https://sso.uaa.cn:8443/cas/remoteLogin</param-value>
+			<param-value>https://sso.slimsmart.cn:8443/cas/remoteLogin</param-value>
 			<!--这里的server是服务端的IP -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>http://www.uaa.cn:8888</param-value>
+			<param-value>http://www.slimsmart.cn:8888</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
@@ -52,11 +52,11 @@
 		</filter-class>
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
-			<param-value>https://sso.uaa.cn:8443/cas</param-value>
+			<param-value>https://sso.slimsmart.cn:8443/cas</param-value>
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>http://www.uaa.cn:8888</param-value>
+			<param-value>http://www.slimsmart.cn:8888</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

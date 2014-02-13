@@ -7,9 +7,9 @@
 <title>登录</title>
 </head>
 <body>
-	<form id="myLoginForm" action="https://sso.uaa.cn:8443/cas/remoteLogin" method="POST">
-		<input type="hidden" name="service" value="http://www.uaa.cn:8888/sso-demo" />
-		<input type="hidden" name="loginUrl" value="http://www.uaa.cn:8888/sso-demo/login.jsp"  />
+	<form id="myLoginForm" action="https://sso.slimsmart.cn:8443/cas/remoteLogin" method="POST">
+		<input type="hidden" name="service" value="http://www.slimsmart.cn:8888/demo" />
+		<input type="hidden" name="loginUrl" value="http://www.slimsmart.cn:8888/demo/login.jsp"  />
 		 <input type="hidden" name="submit" value="true" />
 		<table>
 			<tr>
@@ -22,7 +22,7 @@
 			</tr>
 			<tr>
 				<td>验证码:</td>
-				<td><input type="text" value="" name="authcode"><img src="https://sso.uaa.cn:8443/cas/captcha.jpg" alt="" /></td>
+				<td><input type="text" value="" name="authcode"><img src="https://sso.slimsmart.cn:8443/cas/captcha.jpg" alt="" /></td>
 			</tr>
 			<tr>
 				<td align="right" colspan="2"><input type="submit" /></td>
