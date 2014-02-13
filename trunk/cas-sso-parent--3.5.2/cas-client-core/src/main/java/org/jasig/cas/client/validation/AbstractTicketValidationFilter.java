@@ -186,7 +186,7 @@ public abstract class AbstractTicketValidationFilter extends AbstractCasFilter {
                 }
             } catch (final TicketValidationException e) {
             	
-            	if(e.getMessage().equalsIgnoreCase("TicketValidation-CTFO")){
+            	if(e.getMessage().equalsIgnoreCase("TicketValidation-slimsmart")){
             		response.sendRedirect(request.getRequestURL().toString());
             		 return;
             	}
