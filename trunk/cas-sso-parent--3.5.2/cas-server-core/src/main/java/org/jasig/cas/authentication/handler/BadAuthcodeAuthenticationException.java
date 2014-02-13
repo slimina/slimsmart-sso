@@ -21,8 +21,7 @@ package org.jasig.cas.authentication.handler;
 import org.jasig.cas.ticket.TicketException;
 
 /**
- * The exception to throw when we know the username is correct but the password
- * is not.
+ * The exception to throw when we know the authcoe is not correct
  * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$
