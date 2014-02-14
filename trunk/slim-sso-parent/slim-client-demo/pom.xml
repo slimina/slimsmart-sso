@@ -9,8 +9,8 @@
 	</parent>
 
 	<groupId>cn.slimsmart.sso.demo</groupId>
-	<artifactId>slim-client-demo</artifactId>
+	<artifactId>slim-demo</artifactId>
 	<packaging>war</packaging>
 
-	<description>(C) Copyright 2004, by tianwei7518</description>
+	<description>(C) Copyright 2004, By Tianwei7518</description>
 </project>
