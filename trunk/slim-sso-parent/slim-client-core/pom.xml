@@ -12,5 +12,23 @@
 	<artifactId>slim-client-core</artifactId>
 	<packaging>jar</packaging>
 
-	<description>(C) Copyright 2004, by tianwei7518</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.5</version>
+		</dependency>
+	</dependencies>
+
+	<description>(C) Copyright 2004, By Tianwei7518</description>
 </project>
