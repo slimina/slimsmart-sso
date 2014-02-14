@@ -13,5 +13,30 @@
 		<module>slim-webapp</module>
 	</modules>
 
-	<description>(C) Copyright 2004, by tianwei7518</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.2.3.RELEASE</spring.version>
+		<logback.version>1.1.1</logback.version>
+		<junit.version>4.11</junit.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	<description>(C) Copyright 2004, By Tianwei7518</description>
 </project>
