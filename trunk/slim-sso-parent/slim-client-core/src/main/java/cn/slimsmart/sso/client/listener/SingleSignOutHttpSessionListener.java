@@ -6,6 +6,22 @@
 
 package cn.slimsmart.sso.client.listener;
 
-public class SingleSignOutHttpSessionListener {
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class SingleSignOutHttpSessionListener implements HttpSessionListener{
+	
+	protected final Log log = LogFactory.getLog(getClass());
+
+	public void sessionCreated(HttpSessionEvent sessionEvent) {
+		log.debug("create session id = "+sessionEvent.getSession().getId());
+	}
+
+	public void sessionDestroyed(HttpSessionEvent sessionEvent) {
+		log.debug("destroy session id = "+sessionEvent.getSession().getId());
+	}
 
 }
