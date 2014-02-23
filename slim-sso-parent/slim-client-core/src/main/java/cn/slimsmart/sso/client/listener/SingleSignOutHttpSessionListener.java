@@ -18,10 +18,12 @@ public class SingleSignOutHttpSessionListener implements HttpSessionListener{
 
 	public void sessionCreated(HttpSessionEvent sessionEvent) {
 		log.debug("create session id = "+sessionEvent.getSession().getId());
+		//session 创建
 	}
 
 	public void sessionDestroyed(HttpSessionEvent sessionEvent) {
 		log.debug("destroy session id = "+sessionEvent.getSession().getId());
+		//session 销毁
 	}
 
 }
