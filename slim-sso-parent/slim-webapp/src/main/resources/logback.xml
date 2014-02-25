@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<substitutionProperty name="log.base" value="logs/slim-sso-webapp" />
-
 	<jmxConfigurator />
-
 	<appender name="stdout"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
