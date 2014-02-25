@@ -102,6 +102,7 @@ public final class SlimTicketManagerImpl implements SlimTicketManager {
 	}
 	
 	public final Ticket getTicketByCode(String ticketCode) {
+		log.debug("getTicketByCode ticketCode="+ticketCode);
 		Assert.notNull(ticketCode, "ticketCode cannot be null");
 		String ticketId = null;
 		synchronized (codeIdMap){
