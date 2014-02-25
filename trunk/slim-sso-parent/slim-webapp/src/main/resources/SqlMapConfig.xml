@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration PUBLIC 
+    "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<properties>
+		<property name="dialect" value="oracle" />
+	</properties>
+ 
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="cacheEnabled" value="false" />
+	</settings>
+
+	<typeAliases>
+<!-- 		<typeAlias alias="Order" type="com.ctfo.lmis.model.tms.Order" /> -->
+		
+	</typeAliases>
+
+	<mappers>
+<!-- 		<mapper resource="com/ctfo/lmis/module/vehicle/mapper/VehicleMapper.xml" /> -->
+	</mappers>
+
+
+</configuration>
