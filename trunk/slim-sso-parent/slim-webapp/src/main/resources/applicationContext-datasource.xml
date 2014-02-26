@@ -44,7 +44,6 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
 
-
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}" />
@@ -60,9 +59,11 @@
 		<property name="testWhileIdle" value="true" />
 		<property name="testOnReturn" value="true" />
 		<property name="defaultAutoCommit" value="false" />
-        <property name="removeAbandoned"><value>true</value></property>   
-        <property name="removeAbandonedTimeout"><value>180</value></property>   
-        <property name="connectionProperties"><value>clientEncoding=UTF-8</value></property>   
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="180" />
+        <property name="connectionProperties" value="clientEncoding=UTF-8" />
+        <property name="validationQuery" value="${dbcp.validationQuery}" />
+		<property name="validationQueryTimeout" value="${dbcp.validationQueryTimeout}" />  
 	</bean>
 
 </beans>
