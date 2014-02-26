@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/validation/*")
 public class ValidationController {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
