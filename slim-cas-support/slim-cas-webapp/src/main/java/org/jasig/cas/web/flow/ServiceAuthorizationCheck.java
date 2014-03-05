@@ -18,6 +18,8 @@
  */
 package org.jasig.cas.web.flow;
 
+import javax.validation.constraints.NotNull;
+
 import org.jasig.cas.authentication.principal.Service;
 import org.jasig.cas.services.RegisteredService;
 import org.jasig.cas.services.ServicesManager;
@@ -28,9 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
-import org.springframework.webflow.test.MockRequestContext;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Performs a basic check if an authentication request for a provided service is authorized to proceed
