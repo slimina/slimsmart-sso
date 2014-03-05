@@ -18,7 +18,7 @@
  */
 (function (window, undefined) {
 	var document = window.document,
-	navigator = window.navigator,
+	//navigator = window.navigator,
 	location = window.location;
 	var jQuery = (function () {
 		var jQuery = function (selector, context) {
