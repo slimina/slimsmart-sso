@@ -18,6 +18,12 @@
 			<artifactId>cas-server-core</artifactId>
 			<version>${cas-server-core.version}</version>
 		</dependency>
+		<dependency>
+           <groupId>com.google.code.kaptcha</groupId> 
+           <artifactId>kaptcha</artifactId> 
+           <version>2.3</version> 
+           <classifier>jdk15</classifier> 
+        </dependency>
 	</dependencies>
 
 	<description>(C) Copyright 2004, By Tianwei7518</description>
