@@ -1,17 +1,17 @@
-¸ù¾İcas¸ÄÔìÊ¹Ö®Ö§³ÖÔ¶³ÌPOSTÌá½»ÑéÖ¤µÇÂ¼£¬Í¬Ê±·µ»Ø´íÎóĞİÏ¢¡£
-slim-cas-client-support£º¿Í»§¶ËÖ§³Öjar°ü
-slim-cas-server-support£º·şÎñ¶ËÖ§³Öjar°ü
-slim-cas-webapp£ºcas·şÎñ¶Ë
+æ ¹æ®casæ”¹é€ ä½¿ä¹‹æ”¯æŒè¿œç¨‹POSTæäº¤éªŒè¯ç™»å½•ï¼ŒåŒæ—¶è¿”å›é”™è¯¯ä¼‘æ¯ã€‚
+slim-cas-client-supportï¼šå®¢æˆ·ç«¯æ”¯æŒjaråŒ…
+slim-cas-server-supportï¼šæœåŠ¡ç«¯æ”¯æŒjaråŒ…
+slim-cas-webappï¼šcasæœåŠ¡ç«¯
 
-¿Í»§¶ËÅäÖÃ£º
-mavenÒıÈëslim-cas-client-support jar°ü
-web.xmlÅäÖÃ£º
-<!-- ÓÃÓÚµ¥µãÍË³ö£¬¸Ã¹ıÂËÆ÷ÓÃÓÚÊµÏÖµ¥µãµÇ³ö¹¦ÄÜ£¬¿ÉÑ¡ÅäÖÃ -->
+å®¢æˆ·ç«¯é…ç½®ï¼š
+mavenå¼•å…¥slim-cas-client-support jaråŒ…
+web.xmlé…ç½®ï¼š
+<!-- ç”¨äºå•ç‚¹é€€å‡ºï¼Œè¯¥è¿‡æ»¤å™¨ç”¨äºå®ç°å•ç‚¹ç™»å‡ºåŠŸèƒ½ï¼Œå¯é€‰é…ç½® -->
 <listener>
 	<listener-class>cn.slimsmart.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
 </listener>
 
-<!-- ¸Ã¹ıÂËÆ÷ÓÃÓÚÊµÏÖµ¥µãµÇ³ö¹¦ÄÜ£¬¿ÉÑ¡ÅäÖÃ¡£ -->
+<!-- è¯¥è¿‡æ»¤å™¨ç”¨äºå®ç°å•ç‚¹ç™»å‡ºåŠŸèƒ½ï¼Œå¯é€‰é…ç½®ã€‚ -->
 <filter>
 	<filter-name>CAS Single Sign Out Filter</filter-name>
 	<filter-class>cn.slimsmart.cas.client.session.SingleSignOutFilter</filter-class>
@@ -21,7 +21,7 @@ web.xmlÅäÖÃ£º
 	<url-pattern>/*</url-pattern>
 </filter-mapping>
 
-<!-- ¸Ã¹ıÂËÆ÷¸ºÔğÓÃ»§µÄÈÏÖ¤¹¤×÷£¬±ØĞëÆôÓÃËü -->
+<!-- è¯¥è¿‡æ»¤å™¨è´Ÿè´£ç”¨æˆ·çš„è®¤è¯å·¥ä½œï¼Œå¿…é¡»å¯ç”¨å®ƒ -->
 <filter>
 	<filter-name>CASFilter</filter-name>
 	<filter-class>cn.slimsmart.cas.client.authentication.RemoteAuthenticationFilter</filter-class>
@@ -32,7 +32,7 @@ web.xmlÅäÖÃ£º
 	<init-param>
 		<param-name>casServerLoginUrl</param-name>
 		<param-value>https://sso.slimsmart.cn:8443/cas/remoteLogin</param-value>
-		<!--ÕâÀïµÄserverÊÇ·şÎñ¶ËµÄIP -->
+		<!--è¿™é‡Œçš„serveræ˜¯æœåŠ¡ç«¯çš„IP -->
 	</init-param>
 	<init-param>
 		<param-name>serverName</param-name>
@@ -44,7 +44,7 @@ web.xmlÅäÖÃ£º
 	<url-pattern>/*</url-pattern>
 </filter-mapping>
 
-<!-- ¸Ã¹ıÂËÆ÷¸ºÔğ¶ÔTicketµÄĞ£Ñé¹¤×÷£¬±ØĞëÆôÓÃËü -->
+<!-- è¯¥è¿‡æ»¤å™¨è´Ÿè´£å¯¹Ticketçš„æ ¡éªŒå·¥ä½œï¼Œå¿…é¡»å¯ç”¨å®ƒ -->
 <filter>
 	<filter-name>CAS Validation Filter</filter-name>
 	<filter-class>
@@ -64,7 +64,7 @@ web.xmlÅäÖÃ£º
 	<url-pattern>/*</url-pattern>
 </filter-mapping>
 
-<!-- ¸Ã¹ıÂËÆ÷¸ºÔğÊµÏÖHttpServletRequestÇëÇóµÄ°ü¹ü£¬ ±ÈÈçÔÊĞí¿ª·¢ÕßÍ¨¹ıHttpServletRequestµÄgetRemoteUser()·½·¨»ñµÃSSOµÇÂ¼ÓÃ»§µÄµÇÂ¼Ãû£¬¿ÉÑ¡ÅäÖÃ¡£ -->
+<!-- è¯¥è¿‡æ»¤å™¨è´Ÿè´£å®ç°HttpServletRequestè¯·æ±‚çš„åŒ…è£¹ï¼Œ æ¯”å¦‚å…è®¸å¼€å‘è€…é€šè¿‡HttpServletRequestçš„getRemoteUser()æ–¹æ³•è·å¾—SSOç™»å½•ç”¨æˆ·çš„ç™»å½•åï¼Œå¯é€‰é…ç½®ã€‚ -->
 <filter>
 	<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
 	<filter-class>
@@ -76,7 +76,7 @@ web.xmlÅäÖÃ£º
 	<url-pattern>/*</url-pattern>
 </filter-mapping>
 
-<!-- ¸Ã¹ıÂËÆ÷Ê¹µÃ¿ª·¢Õß¿ÉÒÔÍ¨¹ıorg.jasig.cas.client.util.AssertionHolderÀ´»ñÈ¡ÓÃ»§µÄµÇÂ¼Ãû¡£ ±ÈÈçAssertionHolder.getAssertion().getPrincipal().getName()¡£ -->
+<!-- è¯¥è¿‡æ»¤å™¨ä½¿å¾—å¼€å‘è€…å¯ä»¥é€šè¿‡org.jasig.cas.client.util.AssertionHolderæ¥è·å–ç”¨æˆ·çš„ç™»å½•åã€‚ æ¯”å¦‚AssertionHolder.getAssertion().getPrincipal().getName()ã€‚ -->
 <filter>
 	<filter-name>CAS Assertion Thread Local Filter</filter-name>
 	<filter-class>org.jasig.cas.client.util.AssertionThreadLocalFilter</filter-class>
@@ -85,25 +85,25 @@ web.xmlÅäÖÃ£º
 	<filter-name>CAS Assertion Thread Local Filter</filter-name>
 	<url-pattern>/*</url-pattern>
 </filter-mapping>
-<!-- ======================== µ¥µãµÇÂ¼½áÊø ======================== -->
+<!-- ======================== å•ç‚¹ç™»å½•ç»“æŸ ======================== -->
 
 
-µÇÂ¼Ò³Ãæ£º
+ç™»å½•é¡µé¢ï¼š
 <form id="myLoginForm" action="https://sso.slimsmart.cn:8443/cas/remoteLogin" method="POST">
 	<input type="hidden" name="service" value="http://www.slimsmart.cn:8888/demo" />
 	<input type="hidden" name="loginUrl" value="http://www.slimsmart.cn:8888/demo/login.jsp"  />
 	 <input type="hidden" name="submit" value="true" />
 	<table>
 		<tr>
-			<td>ÓÃ»§Ãû:</td>
+			<td>ç”¨æˆ·å:</td>
 			<td><input type="text" value="" name="username"></td>
 		</tr>
 		<tr>
-			<td>ÃÜÂë:</td>
+			<td>å¯†ç :</td>
 			<td><input type="text" value="" name="password"></td>
 		</tr>
 		<tr>
-			<td>ÑéÖ¤Âë:</td>
+			<td>éªŒè¯ç :</td>
 			<td><input type="text" value="" name="authcode"><img src="https://sso.slimsmart.cn:8443/cas/captcha.jpg" alt="" /></td>
 		</tr>
 		<tr>
@@ -112,12 +112,21 @@ web.xmlÅäÖÃ£º
 	</table>
 </form>
 
-ÍË³öÁ´½Ó£º
+é€€å‡ºé“¾æ¥ï¼š
 
-<a href="https://sso.slimsmart.cn:8443/cas/remoteLogout?service=http://www.slimsmart.cn:8888/demo">µ¥µãµÇ³ö</a>
+<a href="https://sso.slimsmart.cn:8443/cas/remoteLogout?service=http://www.slimsmart.cn:8888/demo">å•ç‚¹ç™»å‡º</a>
 
 
-×¢£º
-https://sso.slimsmart.cn:8443/cas   cas·şÎñÆ÷µØÖ·
-http://www.slimsmart.cn:8888/demo  ¿Í»§¶ËµØÖ·
-http://www.slimsmart.cn:8888/demo/login.jsp ¿Í»§¶ËµÇÂ½Ò³Ãæ
+æ³¨ï¼š
+https://sso.slimsmart.cn:8443/cas   casæœåŠ¡å™¨åœ°å€
+http://www.slimsmart.cn:8888/demo  å®¢æˆ·ç«¯åœ°å€
+http://www.slimsmart.cn:8888/demo/login.jsp å®¢æˆ·ç«¯ç™»é™†é¡µé¢
+
+æ³¨ï¼šç™»å½•æˆåŠŸï¼Œè·å–ç”¨æˆ·åæ–¹æ³•ï¼š
+ï¼ˆ1ï¼‰requestç›´æ¥è·å–
+String username = request.getRemoteUser()
+ï¼ˆ2ï¼‰é€šè¿‡æ¥å£AttributePrincipalè·å–
+AttributePrincipal principal=(AttributePrincipal) request.getUserPrincipal();
+String username = principal.getName();
+ï¼ˆ3ï¼‰é€šè¿‡ç±»AssertionHolderé™æ€æ–¹æ³•è·å–
+String username =AssertionHolder.getAssertion().getPrincipal().getName()
