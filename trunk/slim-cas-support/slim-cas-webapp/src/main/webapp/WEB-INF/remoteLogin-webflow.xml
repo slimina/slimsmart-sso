@@ -4,6 +4,8 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
                           http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
       start-state="remoteLogin">
+      
+   <var name="credentials" class="cn.slimsmart.cas.server.authentication.principal.UsernamePasswordCredentials" />
  <!-- 远程登陆主要Action -->
     <action-state id="remoteLogin">
         <evaluate expression="remoteLoginAction" />
