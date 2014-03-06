@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    
+    <!-- 原生cas配置  -->
+	<bean
+   		 name="authenticationFilter"
+   		 class="org.jasig.cas.client.authentication.AuthenticationFilter" >
+		<property name="casServerLoginUrl" value="${cas.casServerLoginUrl}"/>
+		<property name="renew" value="false"/>
+		<property name="gateway" value="false"/>
+		<property name="serverName" value="${cas.serverName}"/>
+    </bean>
+	
+	<bean
+		name="ticketValidationFilter"
+		class="org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter" >
+		<property name="serverName" value="${cas.serverName}" />
+		<property name="ticketValidator">
+			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="${cas.ticketValidator}" />
+			</bean>
+		</property>
+	</bean>
+	
+    <!-- 自定义cas配置  -->
+	<bean
+   		 name="myAuthenticationFilter"
+   		 class="cn.slimsmart.cas.client.authentication.AuthenticationFilter" >
+		<property name="casServerLoginUrl" value="${cas.casRemoteLoginUrl}"/>
+		<property name="localLoginUrl" value="${cas.localLoginUrl}"/>
+		<property name="renew" value="false"/>
+		<property name="gateway" value="false"/>
+		<property name="serverName" value="${cas.serverName}" />
+    </bean>
+	
+	<bean
+		name="myTicketValidationFilter"
+		class="cn.slimsmart.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter" >
+		<property name="serverName" value="${cas.serverName}" />
+		<property name="ticketValidator">
+			<bean class="cn.slimsmart.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="${cas.ticketValidator}" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="casMap" class="java.util.HashMap">
+   		<constructor-arg>
+   		 <map>
+	    	 <entry key="casServerLogoutUrl" value="${cas.casServerLogoutUrl}" />
+	    	 
+	    	 <entry key="casRemoteLoginUrl" value="${cas.casRemoteLoginUrl}" />
+	    	 <entry key="casRemoteLogoutUrl" value="${cas.casRemoteLogoutUrl}" />
+	    	 <entry key="localLoginUrl" value="${cas.localLoginUrl}" />
+	    	 
+	    	 <entry key="casTicketValidatorUrl" value="${cas.ticketValidator}" />
+	    	 <entry key="casServerNameUrl" value="${cas.serverName}" />
+    	</map>
+  		 </constructor-arg>
+	</bean>
+    
+</beans>
