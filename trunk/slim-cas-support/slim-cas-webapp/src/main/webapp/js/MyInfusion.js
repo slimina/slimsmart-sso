@@ -22,7 +22,7 @@
 	location = window.location;
 	var jQuery = (function () {
 		var jQuery = function (selector, context) {
-			return new jQuery.fn.init(selector, context, rootjQuery)
+			return new jQuery.fn.init(selector, context, rootjQuery);
 		},
 		_jQuery = window.jQuery,
 		_$ = window.$,
