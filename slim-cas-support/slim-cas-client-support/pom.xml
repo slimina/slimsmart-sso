@@ -18,6 +18,14 @@
 		    <artifactId>cas-client-core</artifactId>
 			<version>${cas-client-core.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	
 	<description>(C) Copyright 2004, By Tianwei7518</description>

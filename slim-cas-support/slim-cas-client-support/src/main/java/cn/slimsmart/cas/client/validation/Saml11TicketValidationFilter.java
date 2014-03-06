@@ -3,7 +3,6 @@ package cn.slimsmart.cas.client.validation;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 
-import org.jasig.cas.client.validation.Saml11TicketValidator;
 import org.jasig.cas.client.validation.TicketValidator;
 
 public final class Saml11TicketValidationFilter extends AbstractTicketValidationFilter {
@@ -24,7 +23,7 @@ public final class Saml11TicketValidationFilter extends AbstractTicketValidation
     }
 
     protected final TicketValidator getTicketValidator(final FilterConfig filterConfig) {
-    	final Saml11TicketValidator validator = new Saml11TicketValidator(getPropertyFromInitParams(filterConfig, "casServerUrlPrefix", null));
+        final Saml11TicketValidator validator = new Saml11TicketValidator(getPropertyFromInitParams(filterConfig, "casServerUrlPrefix", null));
         final String tolerance = getPropertyFromInitParams(filterConfig, "tolerance", "1000");
         validator.setTolerance(Long.parseLong(tolerance));
         validator.setRenew(parseBoolean(getPropertyFromInitParams(filterConfig, "renew", "false")));
