@@ -61,6 +61,7 @@
          <props>
              <prop key="/remoteLogin">remoteLoginController</prop>
              <prop key="/remoteLogout">remoteLogoutController</prop>
+             <prop key="/captchaImg">captchaImageCreateController</prop>
          </props>
      </property>
      <property name="interceptors">
@@ -240,6 +241,9 @@
   <bean id="viewStatisticsController" class="org.jasig.cas.web.StatisticsController"
         p:casTicketSuffix="${host.name}">
     <constructor-arg index="0" ref="ticketRegistry"/>
+  </bean>
+  <bean id="captchaImageCreateController" class="cn.slimsmart.cas.server.web.flow.CaptchaImageCreateAction">
+  	<property name="captchaProducer" ref="captchaProducer"></property>
   </bean>
 
   <bean id="logoutController" class="org.jasig.cas.web.LogoutController"

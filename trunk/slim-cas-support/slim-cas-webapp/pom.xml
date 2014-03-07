@@ -23,6 +23,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.jasig.cas</groupId>
+			<artifactId>cas-server-integration-memcached</artifactId>
+			<version>${cas-server-core.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.opensymphony.quartz</groupId>
 			<artifactId>quartz</artifactId>
 			<version>1.6.1</version>
