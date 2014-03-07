@@ -64,7 +64,7 @@
 						<form:input cssClass="required" cssErrorClass="error" id="authcode" size="10" tabindex="2" path="authcode"  accesskey="${authcodeAccessKey}" htmlEscape="true" autocomplete="off" />
 						</td>
 								<td align="left" valign="bottom" style="vertical-align: bottom;">
-						&nbsp; <img alt="<spring:message code="required.authcode" />" onclick="this.src='captcha.jpg?'+Math.random()" width="93" height="30" src="captcha.jpg">
+						&nbsp; <img alt="<spring:message code="required.authcode" />" onclick="this.src='captchaImg?'+Math.random()" width="80" height="30" src="captchaImg">
                     </td>
 						</tr>
 						</table>
