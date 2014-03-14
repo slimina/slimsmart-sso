@@ -13,6 +13,11 @@ import org.springframework.web.servlet.mvc.AbstractController;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 
+/**
+ * 验证码spring mvc  实现
+ * @author zhutianwei
+ *
+ */
 public final class CaptchaImageCreateAction extends AbstractController {
 	
 	private Producer captchaProducer = null;

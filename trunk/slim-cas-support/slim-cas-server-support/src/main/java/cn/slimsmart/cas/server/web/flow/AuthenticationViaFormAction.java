@@ -20,6 +20,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.CookieGenerator;
 import org.springframework.webflow.execution.RequestContext;
 
+import com.google.code.kaptcha.Constants;
+
 import cn.slimsmart.cas.server.authentication.handler.BadAuthcodeAuthenticationException;
 import cn.slimsmart.cas.server.authentication.handler.NullAuthcodeAuthenticationException;
 import cn.slimsmart.cas.server.authentication.principal.UsernamePasswordCredentials;
@@ -61,6 +63,18 @@ public class AuthenticationViaFormAction {
                 new MessageBuilder().error().code(code).arg(providedLoginTicket).defaultText(code).build());
             return "error";
         }
+        
+        // 验证码 认证
+		final HttpSession session = WebUtils.getHttpServletRequest(context).getSession();
+		final String kaptcha = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+		session.removeAttribute(Constants.KAPTCHA_SESSION_KEY);
+		
+		UsernamePasswordCredentials cr = (UsernamePasswordCredentials) credentials;
+		if(!StringUtils.hasText(kaptcha) || !kaptcha.equalsIgnoreCase(cr.getAuthcode())){
+			this.logger.warn("Invalid login authcode " + cr.getAuthcode());
+			messageContext.addMessage(new MessageBuilder().error().code(BadAuthcodeAuthenticationException.CODE).build());
+			return "error";
+		}
 
         final String ticketGrantingTicketId = WebUtils.getTicketGrantingTicketId(context);
         final Service service = WebUtils.getService(context);
@@ -94,18 +108,26 @@ public class AuthenticationViaFormAction {
     }
 
     public final String submit(final RequestContext context, final MessageContext messageContext) throws Exception {
-        // Validate login ticket
-      /*  final String authoritativeLoginTicket = WebUtils.getLoginTicketFromFlowScope(context);
-        final String providedLoginTicket = WebUtils.getLoginTicketFromRequest(context);
-        if (!authoritativeLoginTicket.equals(providedLoginTicket)) {
-            this.logger.warn("Invalid login ticket " + providedLoginTicket);
-            final String code = "INVALID_TICKET";
-            messageContext.addMessage(new MessageBuilder().error().code(code).arg(providedLoginTicket).defaultText(code).build());
-            return "error";
-        }*/
         final String ticketGrantingTicketId = WebUtils.getTicketGrantingTicketId(context);
         final Service service = WebUtils.getService(context);
         final HttpServletRequest request = WebUtils.getHttpServletRequest(context);
+        final HttpSession session = request.getSession();
+        
+        // 验证码 认证
+        String authcode = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        session.removeAttribute(Constants.KAPTCHA_SESSION_KEY);
+		String submitAuthcode =request.getParameter("authcode");
+		
+        if(!StringUtils.hasText(submitAuthcode)){
+        	context.getFlowScope().put("errorCode", NullAuthcodeAuthenticationException.CODE);
+        	return "error";  
+        }
+        if(!submitAuthcode.equalsIgnoreCase(authcode)){  
+        	this.logger.warn("Invalid login authcode " + submitAuthcode);
+        	context.getFlowScope().put("errorCode", BadAuthcodeAuthenticationException.CODE);
+            return "error";  
+        }
+        
         String username = request.getParameter("username");
         if(!StringUtils.hasText(username)){
         	 context.getFlowScope().put("errorCode", "required.username");
@@ -128,7 +150,6 @@ public class AuthenticationViaFormAction {
                 return "warn";
             } catch (final TicketException e) {
                 if (e.getCause() != null && AuthenticationException.class.isAssignableFrom(e.getCause().getClass())) {
-                    //populateErrorsInstance(e, messageContext);
                     context.getFlowScope().put("errorCode", e.getCode());
                     return "error";
                 }
@@ -141,60 +162,20 @@ public class AuthenticationViaFormAction {
         try {
             WebUtils.putTicketGrantingTicketInRequestScope(context, this.centralAuthenticationService.createTicketGrantingTicket(credentials));
             putWarnCookieIfRequestParameterPresent(context);
+            context.getFlowScope().remove("errorCode");
             return "success";
         } catch (final TicketException e) {
-            //populateErrorsInstance(e, messageContext);
             context.getFlowScope().put("errorCode", e.getCode());
             return "error";
         }
     }
     
     private void populateErrorsInstance(final TicketException e, final MessageContext messageContext) {
-
         try {
             messageContext.addMessage(new MessageBuilder().error().code(e.getCode()).defaultText(e.getCode()).build());
         } catch (final Exception fe) {
             logger.error(fe.getMessage(), fe);
         }
-    }
-    
-    public final String validatorCode(final RequestContext context,  final Credentials credentials, final MessageContext messageContext) throws Exception { 
-    	final HttpServletRequest request = WebUtils.getHttpServletRequest(context);
-        HttpSession session = request.getSession();
-        String authcode = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-		session.removeAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-        
-		UsernamePasswordCredentials upc = (UsernamePasswordCredentials)credentials;
-		String submitAuthcode =upc.getAuthcode();
-        if(!StringUtils.hasText(submitAuthcode) || !StringUtils.hasText(authcode)){
-        	populateErrorsInstance(new NullAuthcodeAuthenticationException(),messageContext);
-        	return "error";  
-        }
-        if(submitAuthcode.equals(authcode)){  
-        	return "success";
-        }
-        populateErrorsInstance(new BadAuthcodeAuthenticationException(),messageContext);
-        return "error";  
-    }
-    public final String validatorCode(final RequestContext context, final MessageContext messageContext) throws Exception {  
-        
-    	final HttpServletRequest request = WebUtils.getHttpServletRequest(context);
-    	
-        HttpSession session = request.getSession();
-        String authcode = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-		//session.removeAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-        
-		String submitAuthcode =request.getParameter("authcode");
-        if(!StringUtils.hasText(submitAuthcode)){
-        	context.getFlowScope().put("errorCode", NullAuthcodeAuthenticationException.CODE);
-        	return "error";  
-        }
-        if(submitAuthcode.equals(authcode)){  
-        	context.getFlowScope().remove("errorCode");
-        	return "success";
-        }
-        context.getFlowScope().put("errorCode", BadAuthcodeAuthenticationException.CODE);
-        return "error";  
     }
 
     private void putWarnCookieIfRequestParameterPresent(final RequestContext context) {
