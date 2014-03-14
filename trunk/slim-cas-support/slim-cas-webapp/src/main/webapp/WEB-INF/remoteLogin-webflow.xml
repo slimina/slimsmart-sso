@@ -10,19 +10,13 @@
     <action-state id="remoteLogin">
         <evaluate expression="remoteLoginAction" />
         <transition on="error" to="remoteCallbackView" />
-        <transition on="submit" to="authcodeValidate" />
+        <transition on="submit" to="bindAndValidate" />
         <transition on="checkTicketGrantingTicket" to="ticketGrantingTicketExistsCheck" />
     </action-state>
     
     <!-- 远程回调页面，主要以JavaScript的方式回传一些参数用 -->
     <end-state id="remoteCallbackView" view="remoteCallbackView" />
     
-	<action-state id="authcodeValidate">  
-        <evaluate expression="authenticationViaFormAction.validatorCode(flowRequestContext, messageContext)" />  
-        <transition on="error" to="remoteCallbackView" />  
-        <transition on="success" to="bindAndValidate" />  
-    </action-state>  
-	
     <action-state id="bindAndValidate">
         <evaluate expression="authenticationViaFormAction.doBind(flowRequestContext, flowScope.credentials)" />
         <transition on="success" to="submit" />

@@ -106,21 +106,5 @@
 
     <!-- The scheduler bean wires up any triggers that define scheduled tasks -->
     <bean id="scheduler" class="org.jasig.cas.util.AutowiringSchedulerFactoryBean"/>
-    
-    <!-- 验证码 -->
-	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
-		<property name="config">
-			<bean class="com.google.code.kaptcha.util.Config">
-				<constructor-arg>
-					<props>
-						<prop key="kaptcha.border">no</prop>
-						<prop key="kaptcha.textproducer.char.space">5</prop>
-						<prop key="kaptcha.session.key">kaptcha.code</prop>
-						<prop key="kaptcha.textproducer.char.length">5</prop>
-					</props>
-				</constructor-arg>
-			</bean>
-		</property>
-	</bean>
             
 </beans>

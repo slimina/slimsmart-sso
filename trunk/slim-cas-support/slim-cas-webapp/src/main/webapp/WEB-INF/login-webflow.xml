@@ -105,16 +105,10 @@
         <on-entry>
             <set name="viewScope.commandName" value="'credentials'" />
         </on-entry>
-		<transition on="submit" bind="true" validate="true" to="authcodeValidate">
+		<transition on="submit" bind="true" validate="true" to="realSubmit">
             <evaluate expression="authenticationViaFormAction.doBind(flowRequestContext, flowScope.credentials)" />
         </transition>
 	</view-state>
-
-	<action-state id="authcodeValidate">  
-        <evaluate expression="authenticationViaFormAction.validatorCode(flowRequestContext, flowScope.credentials, messageContext)" />  
-        <transition on="error" to="generateLoginTicket" />  
-        <transition on="success" to="realSubmit" />  
-    </action-state>  
 
   	<action-state id="realSubmit">
         <evaluate expression="authenticationViaFormAction.submit(flowRequestContext, flowScope.credentials, messageContext)" />
