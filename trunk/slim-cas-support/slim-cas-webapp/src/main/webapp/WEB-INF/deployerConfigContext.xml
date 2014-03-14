@@ -137,8 +137,9 @@
 			</list>
 		</property>
 	</bean>
-
+	
 	<bean id="DefaultPasswordEncoder" class="org.jasig.cas.authentication.handler.DefaultPasswordEncoder" >     
+        <!--  加密方式  SHA-1  MD5  SHA -->
         <constructor-arg index="0" type="java.lang.String" value="MD5"/>     
     </bean>  
     
