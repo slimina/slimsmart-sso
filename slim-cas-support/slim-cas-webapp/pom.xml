@@ -8,7 +8,6 @@
 		<version>1.0.0</version>
 	</parent>
 
-
 	<artifactId>slim-cas-webapp</artifactId>
 	<packaging>war</packaging>
 	<properties>
