@@ -22,39 +22,38 @@
 		cleans them out as specified intervals.
 	</description>
 
-	<bean id="ticketRegistry" class="org.jasig.cas.ticket.registry.MemCacheTicketRegistry">
-		<constructor-arg index="0">
-			<bean class="net.spy.memcached.spring.MemcachedClientFactoryBean"
-				p:servers="192.168.64.128:11211,192.168.64.128:11311" p:protocol="BINARY" p:locatorType="ARRAY_MOD"
-				p:failureMode="Redistribute" p:transcoder-ref="serialTranscoder">
-				<property name="hashAlg">
-					<util:constant
-						static-field="net.spy.memcached.DefaultHashAlgorithm.FNV1A_64_HASH" />
-				</property>
-			</bean>
-		</constructor-arg>
-		<constructor-arg index="1" value="36000" />
-		<constructor-arg index="2" value="2" />
-	</bean>
+<!-- 	<bean id="ticketRegistry" class="org.jasig.cas.ticket.registry.MemCacheTicketRegistry"> -->
+<!-- 		<constructor-arg index="0"> -->
+<!-- 			<bean class="net.spy.memcached.spring.MemcachedClientFactoryBean" -->
+<!-- 				p:servers="192.168.64.128:11211,192.168.64.128:11311" p:protocol="BINARY" p:locatorType="ARRAY_MOD" -->
+<!-- 				p:failureMode="Redistribute" p:transcoder-ref="serialTranscoder"> -->
+<!-- 				<property name="hashAlg"> -->
+<!-- 					<util:constant -->
+<!-- 						static-field="net.spy.memcached.DefaultHashAlgorithm.FNV1A_64_HASH" /> -->
+<!-- 				</property> -->
+<!-- 			</bean> -->
+<!-- 		</constructor-arg> -->
+<!-- 		<constructor-arg index="1" value="36000" /> -->
+<!-- 		<constructor-arg index="2" value="2" /> -->
+<!-- 	</bean> -->
 
-	<bean id="serialTranscoder" class="net.spy.memcached.transcoders.SerializingTranscoder"
-		p:compressionThreshold="2048" />
+<!-- 	<bean id="serialTranscoder" class="net.spy.memcached.transcoders.SerializingTranscoder" -->
+<!-- 		p:compressionThreshold="2048" /> -->
 
 	<!-- Ticket Registry -->
-	<!-- <bean id="ticketRegistry" class="org.jasig.cas.ticket.registry.DefaultTicketRegistry" 
-		/> -->
+	<bean id="ticketRegistry" class="org.jasig.cas.ticket.registry.DefaultTicketRegistry" 
+		/>
+<!-- 	Quartz -->
+<!-- 	TICKET REGISTRY CLEANER -->
+	<bean id="ticketRegistryCleaner" class="org.jasig.cas.ticket.registry.support.DefaultTicketRegistryCleaner"
+	p:ticketRegistry-ref="ticketRegistry" />
 
-	<!--Quartz -->
-	<!-- TICKET REGISTRY CLEANER -->
-	<!-- <bean id="ticketRegistryCleaner" class="org.jasig.cas.ticket.registry.support.DefaultTicketRegistryCleaner" -->
-	<!-- p:ticketRegistry-ref="ticketRegistry" /> -->
+	<bean id="jobDetailTicketRegistryCleaner" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+	p:targetObject-ref="ticketRegistryCleaner"
+	p:targetMethod="clean" />
 
-	<!-- <bean id="jobDetailTicketRegistryCleaner" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean" -->
-	<!-- p:targetObject-ref="ticketRegistryCleaner" -->
-	<!-- p:targetMethod="clean" /> -->
-
-	<!-- <bean id="triggerJobDetailTicketRegistryCleaner" class="org.springframework.scheduling.quartz.SimpleTriggerBean" -->
-	<!-- p:jobDetail-ref="jobDetailTicketRegistryCleaner" -->
-	<!-- p:startDelay="20000" -->
-	<!-- p:repeatInterval="5000000" /> -->
+	<bean id="triggerJobDetailTicketRegistryCleaner" class="org.springframework.scheduling.quartz.SimpleTriggerBean"
+	p:jobDetail-ref="jobDetailTicketRegistryCleaner"
+	p:startDelay="20000"
+	p:repeatInterval="5000000" />
 </beans>
