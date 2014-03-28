@@ -4,6 +4,8 @@ import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.validation.Assertion;
 
+import cn.slimsmart.cas.client.util.CheckUrlUtil;
+
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -34,6 +37,11 @@ public class AuthenticationFilter extends AbstractCasFilter {
      * 本地登陆页面URL.
      */
     private String localLoginUrl;
+    
+    /**
+     * 排除掉一些url
+     */
+    private String excludeUrl;
 
     /**
      * Whether to send the renew request or not.
@@ -55,6 +63,8 @@ public class AuthenticationFilter extends AbstractCasFilter {
         log.trace("Loaded renew parameter: " + this.renew);
         setGateway(Boolean.parseBoolean(getPropertyFromInitParams(filterConfig, "gateway", "false")));
         log.trace("Loaded gateway parameter: " + this.gateway);
+        setExcludeUrl(getPropertyFromInitParams(filterConfig, "excludeUrl", ""));
+        log.trace("Loaded excludeUrl parameter: " + this.excludeUrl);
     }
 
     public void init() {
@@ -67,6 +77,8 @@ public class AuthenticationFilter extends AbstractCasFilter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
         final HttpSession session = request.getSession(false);
+        final String path = request.getServletPath();
+        log.trace("servletPath = " + path);
         final String ticket = request.getParameter(getArtifactParameterName());
         final Assertion assertion = session != null ? (Assertion) session
                 .getAttribute(CONST_CAS_ASSERTION) : null;
@@ -79,7 +91,7 @@ public class AuthenticationFilter extends AbstractCasFilter {
             CommonUtils.isNotBlank(request.getParameter("validated"));
         
 
-        if (!isValidatedLocalLoginUrl && CommonUtils.isBlank(ticket) && assertion == null && !wasGatewayed) {
+        if (!isValidatedLocalLoginUrl && CommonUtils.isBlank(ticket) && assertion == null && !wasGatewayed && !checkExcludeUrl(path)) {
             log.debug("no ticket and no assertion found");
             if (this.gateway) {
                 log.debug("setting gateway attribute in session");
@@ -116,6 +128,28 @@ public class AuthenticationFilter extends AbstractCasFilter {
 			e.printStackTrace();
 		}
     }
+    
+    
+    /**
+	 * 验证请求路径是否过滤
+	 * 
+	 * @param path
+	 * @param excludeUrlArray
+	 * @return
+	 */
+	private boolean checkExcludeUrl(String path) {
+		if(CommonUtils.isBlank(path) || CommonUtils.isBlank(excludeUrl)){
+			return false;
+		}
+		// 去除不需要过滤的URL
+		String[] excludeUrlArray = excludeUrl.split(";");
+		for (String url : excludeUrlArray) {
+			if (CheckUrlUtil.wildcardStarMatch(url, path)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
     public final void setRenew(final boolean renew) {
         this.renew = renew;
@@ -132,4 +166,12 @@ public class AuthenticationFilter extends AbstractCasFilter {
     public final void setLocalLoginUrl(String localLoginUrl) {
         this.localLoginUrl = localLoginUrl;
     }
+
+	public String getExcludeUrl() {
+		return excludeUrl;
+	}
+
+	public void setExcludeUrl(String excludeUrl) {
+		this.excludeUrl = excludeUrl;
+	}
 }
