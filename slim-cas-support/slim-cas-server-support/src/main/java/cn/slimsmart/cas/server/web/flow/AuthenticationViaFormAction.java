@@ -20,11 +20,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.CookieGenerator;
 import org.springframework.webflow.execution.RequestContext;
 
-import com.google.code.kaptcha.Constants;
-
-import cn.slimsmart.cas.server.authentication.handler.BadAuthcodeAuthenticationException;
-import cn.slimsmart.cas.server.authentication.handler.NullAuthcodeAuthenticationException;
+import cn.slimsmart.cas.server.authentication.handler.AuthenticationExceptionCode;
 import cn.slimsmart.cas.server.authentication.principal.UsernamePasswordCredentials;
+
+import com.google.code.kaptcha.Constants;
 
 @SuppressWarnings("deprecation")
 public class AuthenticationViaFormAction {
@@ -72,10 +71,11 @@ public class AuthenticationViaFormAction {
 		UsernamePasswordCredentials cr = (UsernamePasswordCredentials) credentials;
 		if(!StringUtils.hasText(kaptcha) || !kaptcha.equalsIgnoreCase(cr.getAuthcode())){
 			this.logger.warn("Invalid login authcode " + cr.getAuthcode());
-			messageContext.addMessage(new MessageBuilder().error().code(BadAuthcodeAuthenticationException.CODE).build());
+			messageContext.addMessage(new MessageBuilder().error().code(AuthenticationExceptionCode.AUTHENTICATION_AUTHCODE_BAD).build());
 			return "error";
 		}
 
+		//可以添加其他验证逻辑
         final String ticketGrantingTicketId = WebUtils.getTicketGrantingTicketId(context);
         final Service service = WebUtils.getService(context);
         if (StringUtils.hasText(context.getRequestParameters().get("renew")) && ticketGrantingTicketId != null && service != null) {
@@ -119,12 +119,12 @@ public class AuthenticationViaFormAction {
 		String submitAuthcode =request.getParameter("authcode");
 		
         if(!StringUtils.hasText(submitAuthcode)){
-        	context.getFlowScope().put("errorCode", NullAuthcodeAuthenticationException.CODE);
+        	context.getFlowScope().put("errorCode", AuthenticationExceptionCode.AUTHENTICATION_AUTHCODE_REQUIRED);
         	return "error";  
         }
         if(!submitAuthcode.equalsIgnoreCase(authcode)){  
         	this.logger.warn("Invalid login authcode " + submitAuthcode);
-        	context.getFlowScope().put("errorCode", BadAuthcodeAuthenticationException.CODE);
+        	context.getFlowScope().put("errorCode", AuthenticationExceptionCode.AUTHENTICATION_AUTHCODE_BAD);
             return "error";  
         }
         
@@ -138,6 +138,8 @@ public class AuthenticationViaFormAction {
 	       	 context.getFlowScope().put("errorCode", "required.password");
 	       	 return "error";
        }
+      //可以添加其他验证逻辑
+        
         UsernamePasswordCredentials credentials = new UsernamePasswordCredentials();
         credentials.setUsername(username);
         credentials.setPassword(password);
